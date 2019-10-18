@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
   Col,
@@ -10,10 +9,8 @@ import {
   Button,
   Radio,
   Row,
-  PageHeader,
 } from 'antd';
 import 'antd/dist/antd.css'
-import Radiobt from './Radiobt';
 import RadioGroup from 'antd/lib/radio/group';
 
 const { Option } = Select;
@@ -171,8 +168,7 @@ class App extends React.Component{
           <Col span={8}>      
                 <p>Elige los productos que no quieras en tu Terrabox (Estos serán repuestos con otros productos de tu agrado)</p>
                 <Form.Item >
-                  {getFieldDecorator('productos-eliminados',{rules:[{required:true,message:'Elige al menos una opción'}], })
-                  (
+                  {getFieldDecorator('productos-eliminados',{rules:[{required:true,message:'Elige al menos una opción'}], })(
                   <Checkbox.Group style={{ width: '100%' }}>
                   {
                     plainOptions.map(
@@ -192,8 +188,7 @@ class App extends React.Component{
           <Col span={8}>
           <span>¿Antojo de algo que no aparece en la lista? (Lentejas,avena,fruta,etc.)&nbsp;:</span>
         <Form.Item >
-          {getFieldDecorator('antojo')
-          (<Input style={{ width: '100%' }} />)
+          {getFieldDecorator('antojo')(<Input style={{ width: '100%' }} />)
           }
         </Form.Item>
         </Col>
