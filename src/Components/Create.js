@@ -1,6 +1,7 @@
 import React from 'react';
 import firebase from '../Firebase';
 import {Link} from 'react-router-dom';
+import { Editor } from '@tinymce/tinymce-react';
 
 class Create extends React.Component {
     constructor(){
@@ -9,9 +10,15 @@ class Create extends React.Component {
         this.state={
             titulo: '',
             contenido: '',
-            autor: '',
         };
     }
+
+    handleEditorChange = (e) => {
+      const state=this.state;
+      state["contenido"]=e.target.getContent();
+      this.setState(state);
+    }
+
 
     onChange = (e) => {
         const state = this.state;
@@ -22,28 +29,31 @@ class Create extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        const {titulo,contenido,autor} = this.state;
+        const {titulo,contenido} = this.state;
 
+        const date=new Date()
+
+        console.log(date);
         this.ref.add(
             {
-                autor,
-                contenido,
-                titulo
+              titulo,
+              contenido,
+              date
             }
         ).then((docRef) => {
             this.setState({
                 titulo: '',
                 contenido: '',
-                autor: ''
             });
         this.props.history.push("/blogs");
         }).catch((error) =>{
             console.error("No se pudo agregar el blog: ",error);
         });
+        
     }
 
     render(){
-        const {titulo,contenido,autor} = this.state;
+        const {titulo} = this.state;
         return (
             <div className="container">
               <div className="panel panel-default">
@@ -61,11 +71,22 @@ class Create extends React.Component {
                     </div>
                     <div className="form-group">
                       <label htmlFor="description">Contenido:</label>
-                      <textarea className="form-control" name="contenido" onChange={this.onChange} placeholder="contenido" cols="80" rows="3" value={contenido}/>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="author">Autor:</label>
-                      <input type="text" className="form-control" name="autor" value={autor} onChange={this.onChange} placeholder="Autor" autoComplete="Off"/>
+                      <Editor
+                          init={{
+                            height: 500,
+                            menubar: false,
+                            plugins: [
+                              'advlist autolink lists link image charmap print preview anchor',
+                              'searchreplace visualblocks code fullscreen',
+                              'insertdatetime media table paste code help wordcount'
+                            ],
+                            toolbar:
+                              'undo redo | formatselect | bold italic backcolor | \
+                              alignleft aligncenter alignright alignjustify | \
+                              bullist numlist outdent indent | removeformat | image | help'
+                          }}
+                          onChange={this.handleEditorChange}
+                        />
                     </div>
                     <button type="submit" className="btn btn-success">Submit</button>
                   </form>

@@ -1,6 +1,8 @@
 import React from 'react';
 import firebase from '../Firebase';
 import {Link} from 'react-router-dom';
+import './show.css';
+//import DOMPurify from 'dompurify'
 
 class Show extends React.Component{
     constructor(props){
@@ -35,7 +37,13 @@ class Show extends React.Component{
           });
     }
 
+
     render() {
+        const Md = ({timestamp}) =>{
+            return(
+              <p>{timestamp? timestamp.toDate().toDateString():""}</p>
+            ) 
+        }
         return (
           <div className="container">
             <div className="panel panel-default">
@@ -47,14 +55,19 @@ class Show extends React.Component{
               </div>
               <div className="panel-body">
                 <dl>
-                  <dt>Description:</dt>
-                  <dd>{this.state.board.contenido}</dd>
-                  <dt>Author:</dt>
-                  <dd>{this.state.board.autor}</dd>
+                  <dd dangerouslySetInnerHTML={{__html:this.state.board.contenido}} ></dd>
                 </dl>
-                <Link to={`/edit/${this.state.key}`} className="btn btn-success">Edit</Link>&nbsp;
-                <button onClick={this.delete.bind(this, this.state.key)} className="btn btn-danger">Delete</button>
               </div>
+              
+              <div className="row">
+                <div className="col"></div>
+                <div className="col-md-auto"></div>
+                <div className="col col-lg-2">
+                  <Md timestamp={this.state.board.date}/>
+                </div>
+              </div>
+              <Link to={`/edit/${this.state.key}`} className="btn btn-success">Edit</Link>&nbsp;
+                <button onClick={this.delete.bind(this, this.state.key)} className="btn btn-danger">Delete</button>
             </div>
           </div>
         );

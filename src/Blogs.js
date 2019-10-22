@@ -5,7 +5,7 @@ import firebase from './Firebase';
 class Blogs extends React.Component{
     constructor(props){
         super(props);
-        this.ref=firebase.firestore().collection('boards');
+        this.ref=firebase.firestore().collection('boards').orderBy('date',"desc");
         this.unsubscribe=null;
         this.state={
             boards: []
@@ -15,13 +15,12 @@ class Blogs extends React.Component{
     OnCollectionUpdate = (querySnapShot) => {
         const boards = [];
         querySnapShot.forEach(doc => {
-            const {titulo,contenido,autor} = doc.data();
+            const {titulo,contenido} = doc.data();
             boards.push({
                key: doc.id,
                doc,
                titulo,
                contenido,
-               autor
             });   
         });
         this.setState({boards});
@@ -49,17 +48,13 @@ class Blogs extends React.Component{
                   <table className="table table-stripe">
                     <thead>
                       <tr>
-                        <th>titulo</th>
-                        <th>contenido</th>
-                        <th>autor</th>
+                        <th colSpan="8">titulo</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.boards.map((board) =>
+                      {this.state.boards.map((board,i) =>
                         <tr>
-                          <td><Link to={`/show/${board.key}`}>{board.titulo}</Link></td>
-                          <td>{board.contenido}</td>
-                          <td>{board.autor}</td>
+                          <td> <h1><Link to={`/show/${board.key}`} style={{ textDecoration: 'none' }} >{board.titulo}</Link> </h1></td>
                         </tr>
                       )}
                     </tbody>

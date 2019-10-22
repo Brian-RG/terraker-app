@@ -9,6 +9,7 @@ import Edit from './Components/Edit';
 import Create from './Components/Create';
 import Show from './Components/Show';
 import Blogs from './Blogs';
+import Mce from './Components/mce';
 
 const WrappedRegistrationForm = Form.create({ name: 'pedidos' })(App);
 ReactDOM.render(
@@ -23,6 +24,8 @@ ReactDOM.render(
         <Route path='/blogs/' component={Blogs}/>
         <Route path='/create/' component={Create}/>
         <Route path='/Show/:id' component={Show}/>
+        <Route path='/editor' component={Mce}/>
+
     </div>
   </Router>,
     document.getElementById('root')
